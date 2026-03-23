@@ -345,4 +345,55 @@ document.addEventListener("DOMContentLoaded", () => {
       memList.innerHTML = `<li style="color: red; text-align: center;">Lỗi tải: ${error.message}</li>`;
     }
   }
+  setTimeout(() => {
+    document.querySelectorAll(".feature-card").forEach((card) => {
+      const newCard = card.cloneNode(true);
+      card.parentNode.replaceChild(newCard, card);
+      newCard.addEventListener("click", () => {
+        const title = newCard.querySelector("h3").innerText;
+        if (title === "Sổ thu chi gia đình") {
+          document.getElementById("family-finance-view").style.display = "flex";
+          document.getElementById("family-index").style.display = "none";
+        } else if (title === "Thống kê chi tiêu") {
+          document.getElementById("family-stats-view").style.display = "flex";
+          document.getElementById("family-index").style.display = "none";
+        } else if (title === "Thành viên") {
+          document.getElementById("family-members-view").style.display = "flex";
+          document.getElementById("family-index").style.display = "none";
+        } else if (
+          title === "Quản lý Phòng trọ" ||
+          title === "Hóa đơn điện nước" ||
+          title === "Yêu cầu Báo hỏng"
+        ) {
+          document.getElementById("motel-index").style.display = "none";
+          const fakeView = document.getElementById("fake-motel-view");
+          fakeView.style.display = "flex";
+          fakeView.querySelector("h2").innerHTML =
+            `<i class="fas fa-check-circle"></i> ${title}`;
+        } else if (
+          title === "Bảng tin Chung Cư" ||
+          title === "Quản lý Cư dân" ||
+          title === "Đăng ký bãi xe"
+        ) {
+          document.getElementById("apartment-index").style.display = "none";
+          const fakeView = document.getElementById("fake-apartment-view");
+          fakeView.style.display = "flex";
+          fakeView.querySelector("h2").innerHTML =
+            `<i class="fas fa-check-circle"></i> ${title}`;
+        }
+      });
+    });
+    document
+      .getElementById("btn-back-fake-motel")
+      ?.addEventListener("click", () => {
+        document.getElementById("fake-motel-view").style.display = "none";
+        document.getElementById("motel-index").style.display = "flex";
+      });
+    document
+      .getElementById("btn-back-fake-apt")
+      ?.addEventListener("click", () => {
+        document.getElementById("fake-apartment-view").style.display = "none";
+        document.getElementById("apartment-index").style.display = "flex";
+      });
+  }, 500);
 });

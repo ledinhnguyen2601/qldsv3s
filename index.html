@@ -455,5 +455,133 @@
     </div>
 
     <script type="module" src="js/main.js"></script>
+    <div
+      id="fake-motel-view"
+      class="view-container specific-index"
+      style="display: none"
+    >
+      <header class="index-header motel-theme">
+        <div
+          class="header-left"
+          style="display: flex; gap: 15px; align-items: center"
+        >
+          <button
+            id="btn-back-fake-motel"
+            class="btn-outline"
+            style="color: white; border-color: white; padding: 5px 15px"
+          >
+            &larr; Trở lại
+          </button>
+          <h2>Tiêu đề động</h2>
+        </div>
+      </header>
+      <main
+        class="index-body"
+        style="max-width: 800px; margin: 0 auto; width: 100%"
+      >
+        <div
+          style="
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <div style="display: flex; gap: 10px; margin-bottom: 20px">
+            <input type="text" placeholder="Nhập dữ liệu..." style="flex: 1" />
+            <button
+              class="btn-primary"
+              onclick="alert('Đã lưu thành công lên máy chủ!')"
+            >
+              Lưu dữ liệu
+            </button>
+          </div>
+          <ul style="list-style: none; padding: 0">
+            <li
+              style="
+                padding: 15px;
+                border-bottom: 1px solid #e2e8f0;
+                display: flex;
+                justify-content: space-between;
+              "
+            >
+              <strong>Dữ liệu phòng 101</strong>
+              <span style="color: green">Hoàn tất</span>
+            </li>
+            <li
+              style="
+                padding: 15px;
+                border-bottom: 1px solid #e2e8f0;
+                display: flex;
+                justify-content: space-between;
+              "
+            >
+              <strong>Dữ liệu phòng 102</strong>
+              <span style="color: green">Hoàn tất</span>
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <div
+      id="fake-apartment-view"
+      class="view-container specific-index"
+      style="display: none"
+    >
+      <header class="index-header apartment-theme">
+        <div
+          class="header-left"
+          style="display: flex; gap: 15px; align-items: center"
+        >
+          <button
+            id="btn-back-fake-apt"
+            class="btn-outline"
+            style="color: white; border-color: white; padding: 5px 15px"
+          >
+            &larr; Trở lại
+          </button>
+          <h2>Tiêu đề động</h2>
+        </div>
+      </header>
+      <main
+        class="index-body"
+        style="max-width: 800px; margin: 0 auto; width: 100%"
+      >
+        <div
+          style="
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <div style="display: flex; gap: 10px; margin-bottom: 20px">
+            <input
+              type="text"
+              placeholder="Thông tin cư dân/bãi xe..."
+              style="flex: 1"
+            />
+            <button
+              class="btn-primary"
+              onclick="alert('Cập nhật hệ thống thành công!')"
+            >
+              Cập nhật
+            </button>
+          </div>
+          <ul style="list-style: none; padding: 0">
+            <li
+              style="
+                padding: 15px;
+                border-bottom: 1px solid #e2e8f0;
+                border-left: 4px solid #10b981;
+              "
+            >
+              <strong>Bản ghi hệ thống mới nhất</strong>
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
   </body>
 </html>
