@@ -11,14 +11,11 @@ body {
   background-color: #f3f4f6;
   color: #1f2937;
 }
-
 .view-container {
   min-height: 100vh;
   display: flex;
   width: 100%;
 }
-
-/* Input & Button chung */
 input,
 select {
   width: 100%;
@@ -95,184 +92,8 @@ button {
 }
 
 /* ========================================= */
-/* 3. MÀN HÌNH DASHBOARD (QUẢN LÝ TỔNG)      */
+/* 3. GIAO DIỆN TRANG CHỦ & ONBOARDING       */
 /* ========================================= */
-.sidebar {
-  width: 250px;
-  background: #1e293b;
-  color: white;
-  display: flex;
-  flex-direction: column;
-}
-.sidebar-brand {
-  padding: 25px 20px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-bottom: 1px solid #334155;
-}
-.nav-menu {
-  list-style: none;
-  padding: 20px 0;
-  flex: 1;
-}
-.nav-menu li {
-  padding: 15px 20px;
-  color: #94a3b8;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: 0.2s;
-}
-.nav-menu li:hover,
-.nav-menu li.active {
-  background: #334155;
-  color: white;
-  border-left: 4px solid #3b82f6;
-}
-.sidebar-footer {
-  padding: 20px;
-  border-top: 1px solid #334155;
-  font-size: 0.9rem;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-.topbar {
-  background: white;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #e5e7eb;
-}
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.content-area {
-  padding: 30px;
-}
-
-/* Bảng tin & Thống kê */
-.bulletin-board {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-.news-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-.main-news {
-  flex: 2;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-.news-image-main {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-.slider-news {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-}
-.badge {
-  background: #fef2f2;
-  color: #ef4444;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-.news-meta {
-  color: #6b7280;
-  font-size: 0.85rem;
-  margin: 5px 0 10px;
-}
-
-.stats-grid {
-  display: flex;
-  gap: 20px;
-}
-.stat-card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  flex: 1;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-.stat-card p {
-  color: #6b7280;
-  margin-bottom: 10px;
-}
-
-/* Slider mini */
-.slider-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-.dots {
-  display: flex;
-  gap: 5px;
-}
-.dot {
-  width: 8px;
-  height: 8px;
-  background: #d1d5db;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.dot.active {
-  background: #3b82f6;
-}
-.slide-item {
-  display: none;
-}
-.slide-item.active {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  animation: fadeIn 0.5s;
-}
-.news-image-small {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* ========================================= */
-/* 4. GIAO DIỆN TRANG CHỦ & ONBOARDING MỚI   */
-/* ========================================= */
-
 .landing-header {
   text-align: center;
   padding: 80px 20px 40px;
@@ -377,7 +198,7 @@ button {
   background: #1d4ed8;
 }
 
-/* Lưới chọn mô hình (Selection Grid) */
+/* Lưới chọn mô hình */
 .selection-grid {
   display: flex;
   gap: 30px;
@@ -458,13 +279,15 @@ button {
   width: auto;
 }
 
-/* Màn hình index riêng cho từng mô hình */
+/* ========================================= */
+/* 4. GIAO DIỆN INDEX HỘ GIA ĐÌNH            */
+/* ========================================= */
 .specific-index {
-  display: flex;
+  background: #f1f5f9;
+  min-height: 100vh;
+  display: flex; /* XÓA !IMPORTANT Ở ĐÂY RỒI NHÉ */
   flex-direction: column;
   align-items: stretch;
-  background: #f1f5f9;
-  width: 100%;
 }
 .index-header {
   display: flex;
@@ -522,7 +345,7 @@ button {
 .feature-card h3 {
   color: #1e293b;
 }
-/* Làm nổi bật nút Đăng xuất trên thanh header màu */
+
 .index-header .logout-btn {
   color: white;
   border: 2px solid white;
@@ -530,6 +353,204 @@ button {
 }
 .index-header .logout-btn:hover {
   background: white;
-  color: #1e293b; /* Đổi thành chữ đen khi di chuột vào */
+  color: #1e293b;
   transform: scale(1.05);
+}
+
+/* Bảng Thống kê Hộ Gia Đình */
+.stats-grid {
+  display: flex;
+  gap: 20px;
+}
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  flex: 1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+.stat-card p {
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+/* ========================================= */
+/* 5. GIAO DIỆN ADMIN DASHBOARD              */
+/* ========================================= */
+.admin-layout {
+  display: flex; /* XÓA !IMPORTANT Ở ĐÂY RỒI NHÉ */
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+  background: #f1f5f9;
+}
+.admin-sidebar {
+  width: 260px;
+  background: #1e293b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.sidebar-brand {
+  padding: 25px 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  background: #0f172a;
+  border-bottom: 1px solid #334155;
+  color: #3b82f6;
+}
+.sidebar-menu {
+  list-style: none;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.sidebar-menu li {
+  padding: 15px 25px;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: 0.2s;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.sidebar-menu li:hover,
+.sidebar-menu li.active {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border-left: 4px solid #3b82f6;
+}
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.admin-topbar {
+  background: white;
+  height: 75px;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  flex-shrink: 0;
+}
+.topbar-search {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 12px 20px;
+  border-radius: 30px;
+  width: 350px;
+}
+.topbar-search input {
+  border: none;
+  background: transparent;
+  outline: none;
+  margin-left: 10px;
+  width: 100%;
+  font-size: 1rem;
+}
+.admin-content {
+  padding: 35px;
+}
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+.dashboard-card {
+  border-radius: 15px;
+  padding: 30px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
+  cursor: pointer;
+}
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+.dashboard-card.primary {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+.dashboard-card.warning {
+  background: linear-gradient(135deg, #f59e0b, #b45309);
+}
+.dashboard-card.success {
+  background: linear-gradient(135deg, #10b981, #047857);
+}
+.card-info h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+.card-info h2 {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: bold;
+}
+.card-icon {
+  font-size: 4rem;
+  opacity: 0.3;
+}
+.data-table-container {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+.data-table-container h3 {
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.data-table th {
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+.data-table tr:hover td {
+  background: #f8fafc;
+}
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.status-paid {
+  background: #dcfce7;
+  color: #15803d;
+}
+.action-btn {
+  background: #eff6ff;
+  color: #3b82f6;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
 }

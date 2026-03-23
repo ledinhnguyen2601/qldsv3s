@@ -24,24 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const motelIndex = document.getElementById("motel-index");
   const apartmentIndex = document.getElementById("apartment-index");
 
-  // 3 màn hình tính năng của Hộ gia đình
   const familyFinanceView = document.getElementById("family-finance-view");
   const familyStatsView = document.getElementById("family-stats-view");
   const familyMembersView = document.getElementById("family-members-view");
 
+  const fakeMotelView = document.getElementById("fake-motel-view");
+  const fakeApartmentView = document.getElementById("fake-apartment-view");
+
+  // HÀM CHUYỂN MÀN HÌNH NÂNG CẤP (QUÉT SẠCH MỌI TRANG ĐỂ CHỐNG DÍNH)
   function showView(viewElement) {
-    [
-      landingView,
-      authView,
-      selectionView,
-      familyIndex,
-      motelIndex,
-      apartmentIndex,
-      familyFinanceView,
-      familyStatsView,
-      familyMembersView,
-    ].forEach((v) => {
-      if (v) v.style.display = "none";
+    document.querySelectorAll(".view-container").forEach((v) => {
+      v.style.display = "none";
     });
     if (viewElement) {
       viewElement.style.display =
@@ -49,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // LOGIC TRANG CHỦ
   document
     .getElementById("btn-floating-start")
     .addEventListener("click", () => showView(authView));
@@ -86,30 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
     showView(familyIndex);
   });
 
+  // MỞ KHÓA TẠM THỜI CHO ADMIN
   const handleRestrictedAccess = async (type, elementId, indexView) => {
     document.querySelector(elementId).addEventListener("click", async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-      try {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        const role = userDoc.exists() ? userDoc.data().role : "user";
-        if (role !== "manager" && role !== "admin") {
-          alert(
-            "Tính năng này chỉ được kích hoạt khi có đơn vị quản lý được đăng ký. Vui lòng liên hệ Nhà phát triển ở chân trang để đăng ký dịch vụ quản lý!",
-          );
-        } else {
-          document.getElementById(
-            type === "motel" ? "motelSpaceName" : "apartmentSpaceName",
-          ).innerText =
-            "Quản lý " + (type === "motel" ? "Xóm Trọ" : "Chung Cư");
-          showView(indexView);
-        }
-      } catch (e) {
-        alert("Có lỗi kiểm tra quyền truy cập.");
-      }
+      showView(indexView);
     });
   };
-
   handleRestrictedAccess("motel", "#select-motel", motelIndex);
   handleRestrictedAccess("apartment", "#select-apartment", apartmentIndex);
 
@@ -119,32 +95,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ĐĂNG KÝ / ĐĂNG NHẬP
   const errorText = document.getElementById("auth-error");
-
   document.getElementById("btnRegister").addEventListener("click", () => {
     const e = document.getElementById("email").value,
       p = document.getElementById("password").value;
     if (!e || !p) {
       errorText.style.display = "block";
-      errorText.innerText = "Nhập đủ Email và Mật khẩu!";
+      errorText.innerText = "Nhập đủ Email/Mật khẩu!";
       return;
     }
     createUserWithEmailAndPassword(auth, e, p)
       .then(() => {
-        alert("Đăng ký thành công! Đang chuyển hướng...");
+        alert("Đăng ký thành công!");
       })
       .catch((err) => {
         errorText.style.display = "block";
         errorText.innerText = "Lỗi: " + err.message;
       });
   });
-
   document.getElementById("btnLogin").addEventListener("click", () => {
     const e = document.getElementById("email").value,
       p = document.getElementById("password").value;
     if (!e || !p) {
       errorText.style.display = "block";
-      errorText.innerText = "Nhập đủ Email và Mật khẩu!";
+      errorText.innerText = "Nhập đủ Email/Mật khẩu!";
       return;
     }
     signInWithEmailAndPassword(auth, e, p).catch(() => {
@@ -154,16 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ==========================================================
-  // 4. LOGIC FULL TÍNH NĂNG THẬT: HỘ GIA ĐÌNH
+  // CLICK ĐIỀU HƯỚNG CÁC TRANG CON
   // ==========================================================
-
-  // Gắn sự kiện quay lại cho tất cả các nút Back
   document.querySelectorAll(".btn-back-family").forEach((btn) => {
     btn.addEventListener("click", () => showView(familyIndex));
   });
 
-  // Chuyển hướng khi click vào thẻ tính năng
-  document.querySelectorAll(".feature-card").forEach((card) => {
+  // 1. Click Hộ Gia Đình
+  document.querySelectorAll("#family-index .feature-card").forEach((card) => {
     card.addEventListener("click", () => {
       const title = card.querySelector("h3").innerText;
       if (title === "Sổ thu chi gia đình") {
@@ -175,13 +148,41 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (title === "Thành viên") {
         showView(familyMembersView);
         loadMembers();
-      } else {
-        alert(`Đang mở module: ${title}\n(Cập nhật sau)`);
       }
     });
   });
 
-  // --- MODULE 1: SỔ THU CHI ---
+  // 2. Click Menu Xóm Trọ -> Hiện Fake View
+  document.querySelectorAll(".motel-menu li").forEach((li) => {
+    li.addEventListener("click", () => {
+      const title = li.innerText.trim();
+      if (title.includes("Bảng điều khiển")) return;
+      fakeMotelView.querySelector("h2").innerHTML =
+        `<i class="fas fa-check-circle"></i> ${title}`;
+      showView(fakeMotelView);
+    });
+  });
+  document
+    .getElementById("btn-back-fake-motel")
+    ?.addEventListener("click", () => showView(motelIndex));
+
+  // 3. Click Menu Chung Cư -> Hiện Fake View
+  document.querySelectorAll(".apt-menu li").forEach((li) => {
+    li.addEventListener("click", () => {
+      const title = li.innerText.trim();
+      if (title.includes("Bảng điều khiển")) return;
+      fakeApartmentView.querySelector("h2").innerHTML =
+        `<i class="fas fa-check-circle"></i> ${title}`;
+      showView(fakeApartmentView);
+    });
+  });
+  document
+    .getElementById("btn-back-fake-apt")
+    ?.addEventListener("click", () => showView(apartmentIndex));
+
+  // ==========================================================
+  // LOGIC FIREBASE HỘ GIA ĐÌNH
+  // ==========================================================
   const btnAddTrans = document.getElementById("btn-add-trans");
   if (btnAddTrans) {
     btnAddTrans.addEventListener("click", async () => {
@@ -189,13 +190,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const amount = document.getElementById("trans-amount").value;
       const type = document.getElementById("trans-type").value;
       const uid = auth.currentUser.uid;
-
-      if (!desc || !amount) {
-        alert("Vui lòng nhập đủ mô tả và số tiền!");
-        return;
-      }
+      if (!desc || !amount) return alert("Vui lòng nhập đủ mô tả và số tiền!");
       btnAddTrans.innerText = "Đang lưu...";
-
       try {
         await addDoc(collection(db, "spaces", uid, "transactions"), {
           description: desc,
@@ -226,11 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
         orderBy("createdAt", "desc"),
       );
       const snapshot = await getDocs(q);
-      if (snapshot.empty) {
-        transList.innerHTML =
-          '<li style="text-align: center; color: gray; padding: 20px;">Chưa có giao dịch nào.</li>';
-        return;
-      }
+      if (snapshot.empty)
+        return (transList.innerHTML =
+          '<li style="text-align: center; color: gray; padding: 20px;">Chưa có giao dịch nào.</li>');
       transList.innerHTML = "";
       snapshot.forEach((docSnap) => {
         const data = docSnap.data();
@@ -238,10 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement("li");
         li.style.cssText =
           "display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #e2e8f0;";
-        li.innerHTML = `
-                  <div><strong style="color: #1e293b; display: block;">${data.description}</strong><span style="font-size: 0.8rem; color: #64748b;">${new Date(data.createdAt).toLocaleDateString("vi-VN")}</span></div>
-                  <strong style="color: ${isIncome ? "#10b981" : "#ef4444"}; font-size: 1.1rem;">${isIncome ? "+" : "-"} ${data.amount.toLocaleString("vi-VN")} đ</strong>
-              `;
+        li.innerHTML = `<div><strong style="color: #1e293b; display: block;">${data.description}</strong><span style="font-size: 0.8rem; color: #64748b;">${new Date(data.createdAt).toLocaleDateString("vi-VN")}</span></div><strong style="color: ${isIncome ? "#10b981" : "#ef4444"}; font-size: 1.1rem;">${isIncome ? "+" : "-"} ${data.amount.toLocaleString("vi-VN")} đ</strong>`;
         transList.appendChild(li);
       });
     } catch (error) {
@@ -249,31 +240,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- MODULE 2: THỐNG KÊ CHI TIÊU ---
   async function loadStats() {
     const statInc = document.getElementById("stat-total-income");
     const statExp = document.getElementById("stat-total-expense");
     const statBal = document.getElementById("stat-balance");
     if (!statInc) return;
-
     statInc.innerText = "Đang tải...";
     statExp.innerText = "Đang tải...";
     statBal.innerText = "Đang tải...";
-    const uid = auth.currentUser.uid;
-
     try {
       const snapshot = await getDocs(
-        collection(db, "spaces", uid, "transactions"),
+        collection(db, "spaces", auth.currentUser.uid, "transactions"),
       );
       let totalInc = 0;
       let totalExp = 0;
-
       snapshot.forEach((docSnap) => {
         const data = docSnap.data();
         if (data.type === "income") totalInc += data.amount;
         else totalExp += data.amount;
       });
-
       statInc.innerText = "+ " + totalInc.toLocaleString("vi-VN") + " đ";
       statExp.innerText = "- " + totalExp.toLocaleString("vi-VN") + " đ";
       statBal.innerText = (totalInc - totalExp).toLocaleString("vi-VN") + " đ";
@@ -282,23 +267,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- MODULE 3: THÀNH VIÊN ---
   const btnAddMember = document.getElementById("btn-add-member");
   if (btnAddMember) {
     btnAddMember.addEventListener("click", async () => {
       const name = document.getElementById("new-member-name").value;
-      const uid = auth.currentUser.uid;
-      if (!name) {
-        alert("Nhập tên thành viên!");
-        return;
-      }
-
+      if (!name) return alert("Nhập tên thành viên!");
       btnAddMember.innerText = "...";
       try {
-        await addDoc(collection(db, "spaces", uid, "members"), {
-          name: name,
-          addedAt: new Date().toISOString(),
-        });
+        await addDoc(
+          collection(db, "spaces", auth.currentUser.uid, "members"),
+          { name: name, addedAt: new Date().toISOString() },
+        );
         document.getElementById("new-member-name").value = "";
         btnAddMember.innerText = "Thêm người";
         loadMembers();
@@ -314,86 +293,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!memList) return;
     memList.innerHTML =
       '<li style="text-align: center; color: gray;">Đang tải...</li>';
-    const uid = auth.currentUser.uid;
-
     try {
-      const q = query(
-        collection(db, "spaces", uid, "members"),
-        orderBy("addedAt", "desc"),
+      const snapshot = await getDocs(
+        query(
+          collection(db, "spaces", auth.currentUser.uid, "members"),
+          orderBy("addedAt", "desc"),
+        ),
       );
-      const snapshot = await getDocs(q);
-
-      if (snapshot.empty) {
-        memList.innerHTML =
-          '<li style="text-align: center; color: gray; padding: 20px;">Chưa có thành viên nào. Hãy thêm!</li>';
-        return;
-      }
-
+      if (snapshot.empty)
+        return (memList.innerHTML =
+          '<li style="text-align: center; color: gray; padding: 20px;">Chưa có thành viên nào. Hãy thêm!</li>');
       memList.innerHTML = "";
       snapshot.forEach((docSnap) => {
         const data = docSnap.data();
         const li = document.createElement("li");
         li.style.cssText =
           "display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #e2e8f0; align-items: center;";
-        li.innerHTML = `
-                  <strong style="color: #1e293b; font-size: 1.1rem;"><i class="fas fa-user-circle" style="color: #94a3b8; margin-right: 10px;"></i>${data.name}</strong>
-                  <span style="font-size: 0.8rem; color: #64748b;">Thêm ngày: ${new Date(data.addedAt).toLocaleDateString("vi-VN")}</span>
-              `;
+        li.innerHTML = `<strong style="color: #1e293b; font-size: 1.1rem;"><i class="fas fa-user-circle" style="color: #94a3b8; margin-right: 10px;"></i>${data.name}</strong><span style="font-size: 0.8rem; color: #64748b;">Thêm ngày: ${new Date(data.addedAt).toLocaleDateString("vi-VN")}</span>`;
         memList.appendChild(li);
       });
     } catch (error) {
       memList.innerHTML = `<li style="color: red; text-align: center;">Lỗi tải: ${error.message}</li>`;
     }
   }
-  setTimeout(() => {
-    document.querySelectorAll(".feature-card").forEach((card) => {
-      const newCard = card.cloneNode(true);
-      card.parentNode.replaceChild(newCard, card);
-      newCard.addEventListener("click", () => {
-        const title = newCard.querySelector("h3").innerText;
-        if (title === "Sổ thu chi gia đình") {
-          document.getElementById("family-finance-view").style.display = "flex";
-          document.getElementById("family-index").style.display = "none";
-        } else if (title === "Thống kê chi tiêu") {
-          document.getElementById("family-stats-view").style.display = "flex";
-          document.getElementById("family-index").style.display = "none";
-        } else if (title === "Thành viên") {
-          document.getElementById("family-members-view").style.display = "flex";
-          document.getElementById("family-index").style.display = "none";
-        } else if (
-          title === "Quản lý Phòng trọ" ||
-          title === "Hóa đơn điện nước" ||
-          title === "Yêu cầu Báo hỏng"
-        ) {
-          document.getElementById("motel-index").style.display = "none";
-          const fakeView = document.getElementById("fake-motel-view");
-          fakeView.style.display = "flex";
-          fakeView.querySelector("h2").innerHTML =
-            `<i class="fas fa-check-circle"></i> ${title}`;
-        } else if (
-          title === "Bảng tin Chung Cư" ||
-          title === "Quản lý Cư dân" ||
-          title === "Đăng ký bãi xe"
-        ) {
-          document.getElementById("apartment-index").style.display = "none";
-          const fakeView = document.getElementById("fake-apartment-view");
-          fakeView.style.display = "flex";
-          fakeView.querySelector("h2").innerHTML =
-            `<i class="fas fa-check-circle"></i> ${title}`;
-        }
-      });
-    });
-    document
-      .getElementById("btn-back-fake-motel")
-      ?.addEventListener("click", () => {
-        document.getElementById("fake-motel-view").style.display = "none";
-        document.getElementById("motel-index").style.display = "flex";
-      });
-    document
-      .getElementById("btn-back-fake-apt")
-      ?.addEventListener("click", () => {
-        document.getElementById("fake-apartment-view").style.display = "none";
-        document.getElementById("apartment-index").style.display = "flex";
-      });
-  }, 500);
 });
